@@ -37,9 +37,13 @@ struct PopoverView: View {
 
             Divider()
             HStack {
-                Text("Samples every 2s")
-                    .font(.caption)
-                    .foregroundStyle(.tertiary)
+                if LoginItem.isAvailable {
+                    LoginToggle()
+                } else {
+                    Text("Samples every 2s")
+                        .font(.caption)
+                        .foregroundStyle(.tertiary)
+                }
                 Spacer()
                 Button("Activity Monitor") {
                     NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Applications/Utilities/Activity Monitor.app"))
@@ -50,6 +54,25 @@ struct PopoverView: View {
         }
         .padding(14)
         .frame(width: 460)
+    }
+}
+
+struct LoginToggle: View {
+    @State private var status = LoginItem.status
+
+    var body: some View {
+        HStack(spacing: 6) {
+            Toggle("Open at login", isOn: Binding(
+                get: { status == .enabled || status == .requiresApproval },
+                set: { LoginItem.set($0); status = LoginItem.status }
+            ))
+            .toggleStyle(.checkbox)
+            if status == .requiresApproval {
+                Button("Approve…") { LoginItem.openSettings() }
+                    .help("macOS needs you to allow Statty in System Settings > Login Items")
+            }
+        }
+        .onAppear { status = LoginItem.status }
     }
 }
 

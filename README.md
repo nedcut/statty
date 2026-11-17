@@ -18,6 +18,9 @@ Requires macOS 14+ and Xcode (or the Swift toolchain).
 swift run                          # or run the debug build directly
 ```
 
+The installed app turns on launch at login the first time it runs. Turn it off with the "Open at login"
+checkbox in the popover, or in System Settings > General > Login Items.
+
 Debug snapshot (renders the popover to a PNG without clicking the menu bar):
 
 ```sh

@@ -8,6 +8,7 @@ struct StattyApp: App {
     init() {
         NSApplication.shared.setActivationPolicy(.accessory)
         Monitor.shared.start()
+        LoginItem.enableOnFirstLaunch()
         SnapshotMode.runIfRequested()
     }
 
